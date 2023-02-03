@@ -19,6 +19,7 @@ model User {
   profile_picture_url String?       @db.VarChar(255)
   password            String?       @db.VarChar(255)
   bio                 String?       @db.VarChar(255)
+  role                String?       @db.VarChar(255)
   Reservation         Reservation[]
 }
 

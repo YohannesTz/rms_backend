@@ -6,9 +6,9 @@ const prisma = new PrismaClient();
 const usersController = {};
 
 usersController.signUp = async (req, res) => {
-    const { email, password, firstName, lastName, phonenumber, bio } = req.body;
+    const { email, password, firstName, lastName, phonenumber, bio, role } = req.body;
 
-    if (email === null || password === null || firstName === null || lastName === null || phonenumber === null || bio === null) {
+    if (email === null || password === null || firstName === null || lastName === null || phonenumber === null || bio === null || role === null) {
         return res.json({
             success: false,
             data: null,
@@ -45,7 +45,8 @@ usersController.signUp = async (req, res) => {
                     phonenumber,
                     profile_picture_url : defaultProfilepic,
                     password: hashedPassword,
-                    bio
+                    bio,
+                    role
                 }
             });
 
