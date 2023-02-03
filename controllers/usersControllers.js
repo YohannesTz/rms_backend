@@ -155,10 +155,6 @@ usersController.login = async (req, res) => {
     }
 }
 
-usersController.uploadProfile = async (req, res) => {
-
-}
-
 usersController.editProfile = async (req, res) => {
     const { id, email, firstName, lastName, phonenumber, bio } = req.body;
 
