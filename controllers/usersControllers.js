@@ -211,7 +211,7 @@ usersController.getAllUsers = async (req, res) => {
     const skip = parseInt(req.query.skip);
     const take = parseInt(req.query.take);
 
-    if (skip < 0 || take < 0 || skip === null || take) {
+    if (!skip || !take) {
         return res.json({
             success: false,
             data: null,
@@ -248,7 +248,7 @@ usersController.getAllUsers = async (req, res) => {
 usersController.getUserById = async (req, res) => {
     const id = parseInt(req.params.id);
 
-    if (id === null) {
+    if (!id) {
         return res.json({
             success: false,
             data: null,
@@ -285,7 +285,7 @@ usersController.getUserById = async (req, res) => {
 usersController.getUsersByEmail = async (req, res) => {
     const email = req.params.email;
 
-    if (email === null) {
+    if (!email) {
         return res.json({
             success: false,
             data: null,
