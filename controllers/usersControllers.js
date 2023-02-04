@@ -33,6 +33,7 @@ usersController.signUp = async (req, res) => {
 
         let isDuplicate = checkUserByEmail > 0 || checkUserByPhone > 0 ? true : false;
         const defaultProfilepic = "/index.png"
+        console.log(isDuplicate);
 
         if (isDuplicate) {
             let hashedPassword = bcrypt.hashSync(password, 8);
@@ -43,7 +44,7 @@ usersController.signUp = async (req, res) => {
                     lastName,
                     email,
                     phonenumber,
-                    profile_picture_url : defaultProfilepic,
+                    profile_picture_url: defaultProfilepic,
                     password: hashedPassword,
                     bio,
                     role
@@ -210,7 +211,7 @@ usersController.getAllUsers = async (req, res) => {
     const skip = parseInt(req.query.skip);
     const take = parseInt(req.query.take);
 
-    if (skip < 0 || take < 0 || skip  === null || take) {
+    if (skip < 0 || take < 0 || skip === null || take) {
         return res.json({
             success: false,
             data: null,
