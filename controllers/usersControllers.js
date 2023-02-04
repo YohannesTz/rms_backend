@@ -35,7 +35,7 @@ usersController.signUp = async (req, res) => {
         const defaultProfilepic = "/index.png"
         console.log(isDuplicate);
 
-        if (isDuplicate) {
+        if (!isDuplicate) {
             let hashedPassword = bcrypt.hashSync(password, 8);
 
             const newUser = await prisma.user.create({
