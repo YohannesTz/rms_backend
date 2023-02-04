@@ -37,7 +37,7 @@ mediaController.create = async (req, res) => {
 
     try {
         let newUrl = await cloudinary.uploader
-            .upload(__dirname + "/uploads/" + date + "." + logo.name.split(".").pop(), {
+            .upload(date + "." + logo.name.split(".").pop(), {
                 resource_type: "",
                 overwrite: true,
                 notification_url: "https://mysite.example.com/notify_endpoint",
