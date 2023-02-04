@@ -83,7 +83,7 @@ reviewsController.getAllReview = async (req, res) => {
     const skip = parseInt(req.query.skip);
     const take = parseInt(req.query.take);
 
-    if (skip < 0 || take < 0) {
+    if (isNaN(skip) || isNaN(take)) {
         return res.json({
             success: false,
             data: null,
@@ -119,7 +119,7 @@ reviewsController.getAllReview = async (req, res) => {
 reviewsController.getReviewById = async (req, res) => {
     const id = parseInt(req.params.id);
 
-    if (id === null) {
+    if (isNaN(id)) {
         return res.json({
             success: false,
             data: null,
@@ -157,7 +157,7 @@ reviewsController.getReviewByRoomId = async (req, res) => {
     const roomId = parseInt(req.params.roomId);
 
 
-    if (roomId === null) {
+    if (isNaN(roomId)) {
         return res.json({
             success: false,
             data: null,
@@ -194,7 +194,7 @@ reviewsController.getReviewByUserId = async (req, res) => {
     const userId = parseInt(req.params.userId);
 
 
-    if (userId === null) {
+    if (isNaN(userId)) {
         return res.json({
             success: false,
             data: null,
@@ -288,7 +288,7 @@ reviewsController.deleteReview = async (req, res) => {
     } = req.body;
 
 
-    if (id < 0) {
+    if (isNaN(id)) {
         return res.json({
             success: false,
             data: null,

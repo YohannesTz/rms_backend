@@ -211,7 +211,7 @@ usersController.getAllUsers = async (req, res) => {
     const skip = parseInt(req.query.skip);
     const take = parseInt(req.query.take);
 
-    if (!skip || !take) {
+    if (isNaN(skip) || isNaN(take)) {
         return res.json({
             success: false,
             data: null,

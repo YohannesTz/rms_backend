@@ -98,7 +98,7 @@ reservationsController.getAllReservations = async (req, res) => {
     const skip = parseInt(req.query.skip);
     const take = parseInt(req.query.take);
 
-    if (skip < 0 || take < 0) {
+    if (isNaN(skip) || isNaN(take)) {
         return res.json({
             success: false,
             data: null,
@@ -136,7 +136,7 @@ reservationsController.getAllReservations = async (req, res) => {
 reservationsController.getReservationById = async (req, res) => {
     const id = parseInt(req.params.id);
 
-    if (id === null) {
+    if (isNaN(id)) {
         return res.json({
             success: false,
             data: null,
@@ -173,7 +173,7 @@ reservationsController.getReservationById = async (req, res) => {
 reservationsController.getReservationByUserId = async (req, res) => {
     const userId = parseInt(req.params.userId);
 
-    if (userId === null) {
+    if (isNaN(userId)) {
         return res.json({
             success: false,
             data: null,
@@ -210,7 +210,7 @@ reservationsController.getReservationByUserId = async (req, res) => {
 reservationsController.getAllReservationsByRoomId = async (req, res) => {
     const roomId = parseInt(req.params.roomId);
 
-    if (roomId === null) {
+    if (isNaN(roomId)) {
         return res.json({
             success: false,
             data: null,
@@ -248,7 +248,7 @@ reservationsController.getReservationsByRoomAndUserId = async (req, res) => {
     const userId = parseInt(req.params.userId);
     const roomId = parseInt(req.params.roomId);
 
-    if (userId === null || roomId === null) {
+    if (isNaN(userId) || isNaN(roomId)) {
         return res.json({
             success: false,
             data: null,

@@ -19,7 +19,7 @@ mediaController.create = async (req, res) => {
 
     const room_id = parseInt(req.body.room_id);
 
-    if (room_id === null || Image === null) {
+    if (isNaN(room_id) || Image === null) {
         return res.json({
             success: false,
             data: null,
@@ -108,7 +108,7 @@ mediaController.getAllMedias = async (req, res) => {
 mediaController.getMediaByRoomId = async (req, res) => {
     const room_id = parseInt(req.params.room_id);
 
-    if (room_id) {
+    if (isNaN(room_id)) {
         return res.json({
             success: false,
             data: null,

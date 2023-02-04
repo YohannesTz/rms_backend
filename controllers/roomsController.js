@@ -111,7 +111,7 @@ roomsController.getAllRooms = async (req, res) => {
     const skip = parseInt(req.query.skip);
     const take = parseInt(req.query.take);
 
-    if (skip < 0 || take < 0) {
+    if (isNaN(skip) || isNaN(take)) {
         return res.json({
             success: false,
             data: null,
@@ -147,7 +147,7 @@ roomsController.getAllRooms = async (req, res) => {
 roomsController.getRoomById = async (req, res) => {
     const id = parseInt(req.params.id);
 
-    if (id === null) {
+    if (isNaN(id)) {
         return res.json({
             success: false,
             data: null,
@@ -184,7 +184,7 @@ roomsController.getAllAvailableRooms = async (req, res) => {
     const skip = parseInt(req.query.skip);
     const take = parseInt(req.query.take);
 
-    if (skip < 0 || take < 0) {
+    if (isNaN(skip) || isNaN(take)) {
         return res.json({
             success: false,
             data: null,
@@ -222,7 +222,7 @@ roomsController.getAllAvailableRooms = async (req, res) => {
 roomsController.getRoomByLordId = async (req, res) => {
     const lordId = parseInt(req.params.lordId);
 
-    if (lordId === null) {
+    if (isNaN(lordId)) {
         return res.json({
             success: false,
             data: null,
