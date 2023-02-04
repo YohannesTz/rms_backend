@@ -13,11 +13,11 @@ cloudinary.config({
 })
 
 mediaController.create = async (req, res) => {
-    const {
-        Image
-    } = req.files;
+    const logo = req.files;
 
     const room_id = parseInt(req.body.room_id);
+
+    console.log(req);
 
     if (isNaN(room_id) || Image === null) {
         return res.json({
@@ -32,13 +32,13 @@ mediaController.create = async (req, res) => {
     let date = Date.now();
 
 
-    Image.mv(
-        __dirname + "/uploads/" + date + "." + Image.name.split(".").pop()
+    logo.mv(
+        __dirname + "/uploads/" + date + "." + logo.name.split(".").pop()
     );
 
     try {
         let newUrl = await cloudinary.uploader
-            .upload(__dirname + "/uploads/" + date + "." + Image.name.split(".").pop(), {
+            .upload(__dirname + "/uploads/" + date + "." + logo.name.split(".").pop(), {
                 resource_type: "",
                 overwrite: true,
                 notification_url: "https://mysite.example.com/notify_endpoint",
@@ -71,7 +71,7 @@ mediaController.getAllMedias = async (req, res) => {
     const skip = parseInt(req.query.skip);
     const take = parseInt(req.query.take);
 
-    if (skip < 0 || take < 0) {
+    if (isNaN(skip) || isNaN(take)) {
         return res.json({
             success: false,
             data: null,
