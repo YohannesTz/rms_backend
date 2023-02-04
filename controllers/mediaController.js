@@ -13,13 +13,12 @@ cloudinary.config({
 })
 
 mediaController.create = async (req, res) => {
-    const logo = req.files;
+    const { logo } = req.files;
 
     const room_id = parseInt(req.body.room_id);
 
-    console.log(req);
 
-    if (isNaN(room_id) || Image === null) {
+    if (isNaN(room_id) || !logo) {
         return res.json({
             success: false,
             data: null,
