@@ -79,7 +79,7 @@ roomsController.create = async (req, res) => {
                 latitude,
                 longtude,
                 is_available,
-                lordId
+                landLordId: lordId
             },
         });
 
