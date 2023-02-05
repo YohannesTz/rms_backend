@@ -19,7 +19,7 @@ route.get("/rooms", roomsController.getAllRooms);
 route.get("/rooms/id/:id", roomsController.getRoomById);
 route.get("/rooms/available", roomsController.getAllAvailableRooms);
 route.get("/rooms/lordId/:lordId", roomsController.getRoomByLordId);
-route.post("/rooms/create", roomsController.create);
+route.post("/rooms/create/:lordId", roomsController.create);
 route.put("/rooms/:id", authMiddleware.auth, roomsController.editRoom);
 
 route.get("/reviews", reviewsController.getAllReview);

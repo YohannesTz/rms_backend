@@ -27,6 +27,8 @@ roomsController.create = async (req, res) => {
         longtude,
         is_available
     } = req.body;
+    
+    const lordId = req.params.lordId;
 
     console.log(req.body);
 
@@ -76,7 +78,8 @@ roomsController.create = async (req, res) => {
                 price,
                 latitude,
                 longtude,
-                is_available
+                is_available,
+                lordId
             },
         });
 
