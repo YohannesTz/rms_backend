@@ -28,8 +28,8 @@ reservationsController.create = async (req, res) => {
     }
 
     try {
-        let startDate = new Date(formValues.start_date);
-        let endDate = new Date(formValues.end_date);
+        let startDate = new Date(start_date);
+        let endDate = new Date(end_date);
         let diff = endDate.getTime() - startDate.getTime();
         let datesInbetween = Math.ceil(diff / (1000 * 3600 * 24));
 
