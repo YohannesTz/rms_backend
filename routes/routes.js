@@ -36,6 +36,7 @@ route.post("/medias/create", mediaController.create);
 
 route.get("/reservations", reservationsController.getAllReservations);
 route.post("/reservations/create", reservationsController.create);
+route.put("/reservations/accept/:resId", reservationsController.acceptReservation);
 route.get("/reservations/id/:id", reservationsController.getReservationById);
 route.get("/reservations/userId/:userId", reservationsController.getReservationByUserId);
 route.get("/reservations/roomId/:roomId", reservationsController.getAllReservationsByRoomId);

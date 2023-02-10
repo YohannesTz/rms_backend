@@ -95,6 +95,51 @@ reservationsController.create = async (req, res) => {
     }
 }
 
+reservationsController.acceptReservation = async (req, res) => {
+    const {
+        resId
+    } = req.query;
+
+    if (isNaN(resId)) {
+        return res.json({
+            success: false,
+            data: null,
+            error: {
+                msg: "Please enter all fields",
+            },
+        });
+    }
+
+    try {
+        const reservation = await prisma.reservation.update({
+            where: {
+                id: resId
+            },
+            data: {
+                status: "accepted"
+            }
+        });
+
+
+        //send Email here
+
+        res.json({
+            success: true,
+            data: {
+                reservation
+            },
+            error: null
+        })
+    } catch (error) {
+        console.log(error);
+        return res.json({
+            success: false,
+            data: null,
+            error: error,
+        });
+    }
+}
+
 reservationsController.getAllReservations = async (req, res) => {
     const skip = parseInt(req.query.skip);
     const take = parseInt(req.query.take);
