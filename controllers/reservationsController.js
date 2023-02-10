@@ -11,6 +11,8 @@ reservationsController.create = async (req, res) => {
         price
     } = req.body;
 
+    console.log(req.body);
+
     if (
         userId === null ||
         roomId === null ||
