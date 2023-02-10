@@ -55,6 +55,7 @@ reservationsController.create = async (req, res) => {
                     start_date,
                     end_date,
                     total_price: totalPrice,
+                    status: "pending"
                 }
             });
 

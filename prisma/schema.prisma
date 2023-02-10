@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
@@ -60,6 +60,8 @@ model Room {
   Reservation Reservation[]
   LandLord    LandLord?     @relation(fields: [landLordId], references: [id])
   landLordId  Int?
+
+  @@index([landLordId])
 }
 
 model Reservation {
@@ -71,6 +73,10 @@ model Reservation {
   total_price Int
   start_date  String @db.VarChar(255)
   end_date    String @db.VarChar(255)
+  status      String @db.VarChar(255)
+
+  @@index([userId])
+  @@index([roomId])
 }
 
 model Address {
@@ -88,6 +94,8 @@ model Review {
   comment String? @db.VarChar(255)
   rating  Int
   Room    Room    @relation(fields: [room_id], references: [id])
+
+  @@index([room_id])
 }
 
 model Media {
