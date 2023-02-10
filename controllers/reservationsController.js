@@ -28,11 +28,12 @@ reservationsController.create = async (req, res) => {
     }
 
     try {
-        const startDate = new Date(start_date);
-        const endDate = new Date(end_date);
-        const datesInbetween = startDate - endDate;
+        let startDate = new Date(formValues.start_date);
+        let endDate = new Date(formValues.end_date);
+        let diff = endDate.getTime() - startDate.getTime();
+        let datesInbetween = Math.ceil(diff / (1000 * 3600 * 24));
 
-        let totalPrice = price;
+        let totalPrice = +price;
 
         if (datesInbetween > 1) {
             totalPrice = price * datesInbetween;
