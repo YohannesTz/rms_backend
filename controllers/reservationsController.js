@@ -40,7 +40,7 @@ reservationsController.create = async (req, res) => {
         }
 
         const reservation = await prisma.reservation.count({
-            while: {
+            where: {
                 roomId,
                 userId,
                 start_date,
