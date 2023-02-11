@@ -21,6 +21,7 @@ route.get("/rooms/available", roomsController.getAllAvailableRooms);
 route.get("/rooms/lordId/:lordId", roomsController.getRoomByLordId);
 route.post("/rooms/create/:lordId", roomsController.create);
 route.put("/rooms/:id", authMiddleware.auth, roomsController.editRoom);
+route.get("/rooms/:text", roomsController.findRooms);
 
 route.get("/reviews", reviewsController.getAllReview);
 route.get("/reviews/roomId/:roomId", reviewsController.getReviewByRoomId);
@@ -33,10 +34,12 @@ route.delete("/reviews/:id", reviewsController.deleteReview);
 route.get("/medias", mediaController.getAllMedias);
 route.get("/medias/roomId/:roomdId", mediaController.getAllMedias);
 route.post("/medias/create", mediaController.create);
+route.post("/medias/createMultiple", mediaController.createMultiple);
 
 route.get("/reservations", reservationsController.getAllReservations);
 route.post("/reservations/create", reservationsController.create);
 route.put("/reservations/accept/:resId", reservationsController.acceptReservation);
+route.get("/reservations/lordId/:lordId", reservationsController.getReservationByLordId);
 route.get("/reservations/id/:id", reservationsController.getReservationById);
 route.get("/reservations/userId/:userId", reservationsController.getReservationByUserId);
 route.get("/reservations/roomId/:roomId", reservationsController.getAllReservationsByRoomId);

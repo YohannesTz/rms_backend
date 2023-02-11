@@ -27,12 +27,16 @@ roomsController.create = async (req, res) => {
         longtude,
         is_available
     } = req.body;
-    
-    const lordId = req.params.lordId;
+
+    const lordId = parseInt(req.params.lordId);
+    const roomPrice = parseInt(price);
+    const totalOccupancy = parseInt(total_occupancy);
+    const totalBedrooms = parseInt(total_bedrooms);
+    const totalBathrooms = parseInt(total_bathrooms);
 
     console.log(req.body);
 
-    if (
+    if (isNaN(lordId) ||
         home_type === null ||
         room_type === null ||
         total_occupancy === null ||
@@ -65,9 +69,9 @@ roomsController.create = async (req, res) => {
             data: {
                 home_type,
                 room_type,
-                total_occupancy,
-                total_bedrooms,
-                total_bathrooms,
+                total_occupancy: totalOccupancy,
+                total_bedrooms: totalBedrooms,
+                total_bathrooms: totalBathrooms,
                 summary,
                 address,
                 has_tv,
@@ -75,7 +79,7 @@ roomsController.create = async (req, res) => {
                 has_air_con,
                 has_heating,
                 has_internet,
-                price,
+                price: roomPrice,
                 latitude,
                 longtude,
                 is_available,
@@ -110,6 +114,56 @@ roomsController.create = async (req, res) => {
     }
 }
 
+roomsController.findRooms = async (req, res) => {
+    const skip = parseInt(req.query.skip);
+    const take = parseInt(req.query.take);
+
+    const text = req.params.text;
+
+    if (isNaN(skip) || isNaN(take)) {
+        return res.json({
+            success: false,
+            data: null,
+            error: {
+                message: "Please enter all fields"
+            }
+        });
+    }
+
+    try {
+        const result = await prisma.room.findMany({
+            skip,
+            take,
+            where: {
+                OR: {
+                    address: {
+                        contains: text
+                    }
+                }
+            },
+            include: {
+                medias: true
+            }
+        });
+
+        res.json({
+            success: true,
+            data: {
+                result,
+            },
+            error: null
+        });
+    } catch (error) {
+        console.log(error);
+
+        res.json({
+            success: false,
+            data: null,
+            error: error
+        });
+    }
+}
+
 roomsController.getAllRooms = async (req, res) => {
     const skip = parseInt(req.query.skip);
     const take = parseInt(req.query.take);
@@ -128,7 +182,10 @@ roomsController.getAllRooms = async (req, res) => {
         const rooms = await prisma.room.findMany({
             skip,
             take,
-            where: {}
+            where: {},
+            include: {
+                medias: true
+            }
         });
         res.json({
             success: true,
@@ -164,6 +221,9 @@ roomsController.getRoomById = async (req, res) => {
         const rooms = await prisma.room.findMany({
             where: {
                 id
+            },
+            include: {
+                medias: true
             }
         })
         res.json({
@@ -203,6 +263,9 @@ roomsController.getAllAvailableRooms = async (req, res) => {
             take,
             where: {
                 is_available: true
+            },
+            include: {
+                medias: true
             }
         });
         res.json({
@@ -239,6 +302,9 @@ roomsController.getRoomByLordId = async (req, res) => {
         const rooms = await prisma.room.findMany({
             where: {
                 landLordId: lordId
+            },
+            include: {
+                medias: true
             }
         });
 

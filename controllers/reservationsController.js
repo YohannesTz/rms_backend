@@ -8,17 +8,18 @@ reservationsController.create = async (req, res) => {
         roomId,
         start_date,
         end_date,
-        price
+        price,
+        lordId
     } = req.body;
 
     console.log(req.body);
 
     if (
-        userId === null ||
-        roomId === null ||
+        isNaN(userId) ||
+        isNaN(roomId) ||
         start_date === null ||
         end_date === null ||
-        price === null
+        isNaN(price)
     ) {
         return res.json({
             success: false,
@@ -58,7 +59,8 @@ reservationsController.create = async (req, res) => {
                     start_date,
                     end_date,
                     total_price: totalPrice,
-                    status: "pending"
+                    status: "pending",
+                    lordId
                 }
             });
 
@@ -95,6 +97,42 @@ reservationsController.create = async (req, res) => {
                 error: error.meta
             });
         }
+    }
+}
+
+reservationsController.getReservationByLordId = async (req, res) => {
+    const { lordId } = req.params;
+    console.log(req.params);
+
+    if (isNaN(lordId)) {
+        return res.json({
+            success: false,
+            data: null,
+            error: {
+                msg: "Please enter all fields",
+            },
+        });
+    }
+
+    try {
+        const reservations = await prisma.reservation.findMany({
+            where: {
+                lordId: parseInt(lordId)
+            }
+        });
+
+        res.json({
+            success: true,
+            data: { reservations },
+            error: null
+        });
+    } catch (error) {
+        console.log(error);
+        return res.json({
+            success: false,
+            data: null,
+            error: error
+        });
     }
 }
 

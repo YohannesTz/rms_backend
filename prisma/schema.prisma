@@ -60,6 +60,7 @@ model Room {
   Reservation Reservation[]
   LandLord    LandLord?     @relation(fields: [landLordId], references: [id])
   landLordId  Int?
+  medias      Media[]
 
   @@index([landLordId])
 }
@@ -74,6 +75,7 @@ model Reservation {
   start_date  String @db.VarChar(255)
   end_date    String @db.VarChar(255)
   status      String @db.VarChar(255)
+  lordId      Int
 
   @@index([userId])
   @@index([roomId])
@@ -102,4 +104,7 @@ model Media {
   id       Int    @id @default(autoincrement())
   file_url String @db.VarChar(255)
   roomId   Int?
+  Room     Room?  @relation(fields: [roomId], references: [id])
+
+  @@index([roomId])
 }
