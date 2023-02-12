@@ -38,7 +38,8 @@ route.post("/medias/createMultiple", mediaController.createMultiple);
 
 route.get("/reservations", reservationsController.getAllReservations);
 route.post("/reservations/create", reservationsController.create);
-route.put("/reservations/accept/:resId", reservationsController.acceptReservation);
+route.put("/reservations/accept/:resId", authMiddleware.auth, reservationsController.acceptReservation);
+route.put("/reservations/reject/:resId", authMiddleware.auth, reservationsController.rejectReservation);
 route.get("/reservations/lordId/:lordId", reservationsController.getReservationByLordId);
 route.get("/reservations/id/:id", reservationsController.getReservationById);
 route.get("/reservations/userId/:userId", reservationsController.getReservationByUserId);

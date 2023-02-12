@@ -1,6 +1,18 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const reservationsController = {}
+const nodemailer = require("nodemailer");
+require("dotenv").config();
+const { ACCEPTION_EMAIL, REJECTION_EMAIL } = require("../util/util");
+
+const transporter = nodemailer.createTransport({
+    host: 'smtp.ethereal.email',
+    port: 587,
+    auth: {
+        user: "bobby.von60@ethereal.email", // this was intentional
+        pass: "N4Ww7gjFANR3Wxsnpf" // this was intentional
+    }
+});
 
 reservationsController.create = async (req, res) => {
     const {
@@ -118,6 +130,10 @@ reservationsController.getReservationByLordId = async (req, res) => {
         const reservations = await prisma.reservation.findMany({
             where: {
                 lordId: parseInt(lordId)
+            },
+            include: {
+                room: true,
+                user: true
             }
         });
 
@@ -139,7 +155,7 @@ reservationsController.getReservationByLordId = async (req, res) => {
 reservationsController.acceptReservation = async (req, res) => {
     const {
         resId
-    } = req.query;
+    } = req.params;
 
     if (isNaN(resId)) {
         return res.json({
@@ -152,17 +168,139 @@ reservationsController.acceptReservation = async (req, res) => {
     }
 
     try {
+
+        //send Email here
+        let info = await transporter.sendMail({
+            from: 'Search Homes Ethiopia <support@searchhomes.com>',
+            to: "yohannes222ethiopia@gmail.com",
+            subject: "Reservation Booked Successfully!",
+            text: "Your Reservation is accepted."
+        })
+
+        let emailUrl = nodemailer.getTestMessageUrl(info);
+
+        console.log("preview: ", emailUrl);
+
+
+
         const reservation = await prisma.reservation.update({
             where: {
-                id: resId
+                id: parseInt(resId)
             },
             data: {
-                status: "accepted"
+                status: emailUrl
             }
         });
 
+        res.json({
+            success: true,
+            data: {
+                reservation
+            },
+            error: null
+        })
+    } catch (error) {
+        console.log(error);
+        return res.json({
+            success: false,
+            data: null,
+            error: error,
+        });
+    }
+}
+
+reservationsController.acceptReservation = async (req, res) => {
+    const {
+        resId
+    } = req.params;
+
+    if (isNaN(resId)) {
+        return res.json({
+            success: false,
+            data: null,
+            error: {
+                msg: "Please enter all fields",
+            },
+        });
+    }
+
+    try {
 
         //send Email here
+        let info = await transporter.sendMail({
+            from: 'Search Homes Ethiopia <support@searchhomes.com>',
+            to: "yohannes222ethiopia@gmail.com",
+            subject: "Reservation Booked Successfully!",
+            html: ACCEPTION_EMAIL
+        })
+
+        let emailUrl = nodemailer.getTestMessageUrl(info);
+
+        console.log("preview: ", emailUrl);
+
+        const reservation = await prisma.reservation.update({
+            where: {
+                id: parseInt(resId)
+            },
+            data: {
+                status: `accepted;${emailUrl}`
+            }
+        });
+
+        res.json({
+            success: true,
+            data: {
+                reservation
+            },
+            error: null
+        })
+    } catch (error) {
+        console.log(error);
+        return res.json({
+            success: false,
+            data: null,
+            error: error,
+        });
+    }
+}
+
+reservationsController.rejectReservation = async (req, res) => {
+    const {
+        resId
+    } = req.params;
+
+    if (isNaN(resId)) {
+        return res.json({
+            success: false,
+            data: null,
+            error: {
+                msg: "Please enter all fields",
+            },
+        });
+    }
+
+    try {
+
+        //send Email here
+        let info = await transporter.sendMail({
+            from: 'Search Homes Ethiopia <support@searchhomes.com>',
+            to: "yohannes222ethiopia@gmail.com",
+            subject: "Reservation Booked Successfully!",
+            html: REJECTION_EMAIL
+        })
+
+        let emailUrl = nodemailer.getTestMessageUrl(info);
+
+        console.log("preview: ", emailUrl);
+
+        const reservation = await prisma.reservation.update({
+            where: {
+                id: parseInt(resId)
+            },
+            data: {
+                status: `declined;${emailUrl}`
+            }
+        });
 
         res.json({
             success: true,
@@ -199,7 +337,10 @@ reservationsController.getAllReservations = async (req, res) => {
         const reservations = await prisma.reservation.findMany({
             skip,
             take,
-            where: {}
+            include: {
+                room: true,
+                user: true
+            }
         });
 
         res.json({
@@ -237,6 +378,10 @@ reservationsController.getReservationById = async (req, res) => {
         const reservations = await prisma.reservation.findMany({
             where: {
                 id
+            },
+            include: {
+                room: true,
+                user: true
             }
         });
 
@@ -274,6 +419,10 @@ reservationsController.getReservationByUserId = async (req, res) => {
         const reservations = await prisma.reservation.findMany({
             where: {
                 userId
+            },
+            include: {
+                room: true,
+                user: true
             }
         });
 
@@ -311,6 +460,10 @@ reservationsController.getAllReservationsByRoomId = async (req, res) => {
         const reservations = await prisma.reservation.findMany({
             where: {
                 roomId
+            },
+            include: {
+                room: true,
+                user: true
             }
         });
 
@@ -350,6 +503,10 @@ reservationsController.getReservationsByRoomAndUserId = async (req, res) => {
             where: {
                 userId,
                 roomId
+            },
+            include: {
+                room: true,
+                user: true
             }
         });
 
