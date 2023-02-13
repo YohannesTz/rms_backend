@@ -108,3 +108,12 @@ model Media {
 
   @@index([roomId])
 }
+
+model Contact {
+  id                Int    @id @default(autoincrement())
+  name              String @db.VarChar(255)
+  email             String @db.VarChar(255)
+  phonenumber       String @db.VarChar(255)
+  telegram_username String @db.VarChar(255)
+  note              String @db.VarChar(255)
+}

@@ -152,7 +152,7 @@ reservationsController.getReservationByLordId = async (req, res) => {
     }
 }
 
-reservationsController.acceptReservation = async (req, res) => {
+/* reservationsController.acceptReservation = async (req, res) => {
     const {
         resId
     } = req.params;
@@ -172,7 +172,7 @@ reservationsController.acceptReservation = async (req, res) => {
         //send Email here
         let info = await transporter.sendMail({
             from: 'Search Homes Ethiopia <support@searchhomes.com>',
-            to: "yohannes222ethiopia@gmail.com",
+            to: "user@gmail.com",
             subject: "Reservation Booked Successfully!",
             text: "Your Reservation is accepted."
         })
@@ -181,16 +181,36 @@ reservationsController.acceptReservation = async (req, res) => {
 
         console.log("preview: ", emailUrl);
 
-
-
-        const reservation = await prisma.reservation.update({
+        const candidateReservation = await prisma.reservation.findMany({
             where: {
                 id: parseInt(resId)
-            },
-            data: {
-                status: emailUrl
             }
-        });
+        })
+
+        console.log(candidateReservation);
+
+
+        const reservation = await prisma.$transaction([
+            prisma.reservation.update({
+                where: {
+                    id: parseInt(resId)
+                },
+                data: {
+                    status: emailUrl
+                }
+            }),
+            prisma.room.update({
+                where: {
+                    id: candidateReservation[0].id
+                },
+
+                data: {
+                    is_available: false
+                }
+            })
+        ])
+
+        console.log(reservation);
 
         res.json({
             success: true,
@@ -208,7 +228,7 @@ reservationsController.acceptReservation = async (req, res) => {
         });
     }
 }
-
+ */
 reservationsController.acceptReservation = async (req, res) => {
     const {
         resId
@@ -229,23 +249,39 @@ reservationsController.acceptReservation = async (req, res) => {
         //send Email here
         let info = await transporter.sendMail({
             from: 'Search Homes Ethiopia <support@searchhomes.com>',
-            to: "yohannes222ethiopia@gmail.com",
-            subject: "Reservation Booked Successfully!",
+            to: "user@gmail.com",
+            subject: "Reservation was Declined!",
             html: ACCEPTION_EMAIL
         })
 
         let emailUrl = nodemailer.getTestMessageUrl(info);
 
-        console.log("preview: ", emailUrl);
 
-        const reservation = await prisma.reservation.update({
+        const candidateReservation = await prisma.reservation.findMany({
             where: {
                 id: parseInt(resId)
-            },
-            data: {
-                status: `accepted;${emailUrl}`
             }
-        });
+        })
+
+        const reservation = await prisma.$transaction([
+            prisma.reservation.update({
+                where: {
+                    id: parseInt(resId)
+                },
+                data: {
+                    status: `accepted;${emailUrl}`
+                }
+            }),
+            prisma.room.update({
+                where: {
+                    id: candidateReservation[0].id
+                },
+
+                data: {
+                    is_available: false
+                }
+            })
+        ])
 
         res.json({
             success: true,

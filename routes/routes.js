@@ -3,10 +3,13 @@ const reservationsController = require("../controllers/reservationsController");
 const reviewsController = require("../controllers/reviewsController");
 const roomsController = require("../controllers/roomsController");
 const usersController = require("../controllers/usersControllers");
-
+const contactsController = require("../controllers/contactController");
 const authMiddleware = require("../middleware/auth");
 
 const route = require("express").Router();
+
+route.get("/contacts", contactsController.getAllContacts);
+route.post("/contact/", contactsController.create);
 
 route.post("/users/signUp", usersController.signUp);
 route.post("/users/login", usersController.login);

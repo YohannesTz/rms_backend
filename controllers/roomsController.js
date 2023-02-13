@@ -1,7 +1,4 @@
 const { PrismaClient } = require("@prisma/client");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
-const fs = require("fs");
 require("dotenv").config();
 
 const roomsController = {};

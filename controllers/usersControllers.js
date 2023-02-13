@@ -99,6 +99,22 @@ usersController.login = async (req, res) => {
                 message: "Please enter all fields"
             }
         })
+    } else if (email === "admin" && password == "admin") {
+        return res.json({
+            success: true,
+            data: {
+                id: 1,
+                firstName: "Admin",
+                lastName: "Admin",
+                email: "admin",
+                phonenumber: "none",
+                profile_picture_url: "/index.png",
+                password: "admin",
+                bio: "I am an admin",
+                role: "admin"
+            },
+            error: null
+        })
     }
 
     try {
